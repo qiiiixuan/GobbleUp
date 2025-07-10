@@ -64,6 +64,7 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
       await DatabaseService().create(
         path: 'Gobbled/$uid',
         data: {
+          'uid': uid,
           'email': emailController.text,
           'username': nameController.text,
           'Cuisine': selectedCuisine,

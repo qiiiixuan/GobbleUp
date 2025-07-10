@@ -17,12 +17,24 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
   int currentIndex = 0;
   final User? user = AuthService().currentUser;
 
-  final List<Future<Map<String, dynamic>?>> restaurantFutures = [
+   List<Future<Map<String, dynamic>?>> restaurantFutures = [
     DatabaseService().getRandomRestaurant(),
     DatabaseService().getRandomRestaurant(),
     DatabaseService().getRandomRestaurant(),
     DatabaseService().getRandomRestaurant(),
   ];
+
+  //Reload and fetch new restaurants
+  void _loadNewRestaurants() {
+    setState(() {
+      restaurantFutures = [
+        DatabaseService().getRandomRestaurant(),
+        DatabaseService().getRandomRestaurant(),
+        DatabaseService().getRandomRestaurant(),
+        DatabaseService().getRandomRestaurant(),
+      ];
+    });
+  }
 
   @override
   void initState() {
@@ -60,7 +72,40 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
         cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
           return RestaurantCardFuture(future: restaurantFutures[index]);
         },
+        onEnd: () => setState(() {
+          currentIndex = 0; // Reset index when swiping ends
+          _loadNewRestaurants(); // Load new restaurants
+        }),
+        isLoop: true,
+        onSwipe: _onSwipe,
       ),
     );
+  }
+
+  Future<bool> _onSwipe(int previousIndex, int? currentIndex, CardSwiperDirection direction) async{
+    // Handle swipe actions if needed
+    print('yes');
+    if (direction.name == 'right') {
+      // Swiped right
+      print('Swiped right on index: $previousIndex');
+      Map<String, dynamic>? restaurantData = await restaurantFutures[previousIndex!];
+      if (restaurantData != null) {
+        // Save resturant data
+        //TODO: Change savedResturants to a list of uids
+        print(restaurantData['uid']);
+        var savedResturants =  await DatabaseService().read(path: 'Gobbler/${user!.uid}/savedResturants');
+        // savedResturants.add(restaurantData['uid']);
+        // await DatabaseService().update(path: 'Gobbler/${user!.uid}/savedResturants', data: {
+        //   'savedResturants': savedResturants,
+        // });
+        // print('Saved restaurant: ${restaurantData['uid']}');
+      }
+      print(restaurantFutures[previousIndex!]);
+    } else if (direction.name == 'left') {
+      // Swiped left
+      print('Swiped left on index: $previousIndex');
+    
+    }
+    return true; 
   }
 }
