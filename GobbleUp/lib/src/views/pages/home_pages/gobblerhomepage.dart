@@ -2,6 +2,7 @@ import 'package:GobbleUp/src/data/constants.dart';
 import 'package:GobbleUp/src/services/auth_service.dart';
 import 'package:GobbleUp/src/services/database_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import '../../widgets/restaurantcard_widget.dart';
@@ -82,29 +83,26 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
     );
   }
 
+  // Handle swipe actions
   Future<bool> _onSwipe(int previousIndex, int? currentIndex, CardSwiperDirection direction) async{
-    // Handle swipe actions if needed
-    print('yes');
+
+    // Get current length of savedRestaurants
+    DataSnapshot? savedRestaurants = await DatabaseService().read(path: 'Gobbler/${user!.uid}/savedRestaurants');
+    int length = savedRestaurants != null ? savedRestaurants.children.length : 0;
+
+    // Swiped right
     if (direction.name == 'right') {
-      // Swiped right
-      print('Swiped right on index: $previousIndex');
-      Map<String, dynamic>? restaurantData = await restaurantFutures[previousIndex!];
+      Map<String, dynamic>? restaurantData = await restaurantFutures[previousIndex];
       if (restaurantData != null) {
-        // Save resturant data
-        //TODO: Change savedResturants to a list of uids
-        print(restaurantData['uid']);
-        var savedResturants =  await DatabaseService().read(path: 'Gobbler/${user!.uid}/savedResturants');
-        // savedResturants.add(restaurantData['uid']);
-        // await DatabaseService().update(path: 'Gobbler/${user!.uid}/savedResturants', data: {
-        //   'savedResturants': savedResturants,
-        // });
-        // print('Saved restaurant: ${restaurantData['uid']}');
+        // Save restaurant data
+        await DatabaseService().update(
+            path: 'Gobbler/${user!.uid}/savedRestaurants',
+            data: {'listItem${length + 1}' : restaurantData['uid']},
+        );
       }
-      print(restaurantFutures[previousIndex!]);
-    } else if (direction.name == 'left') {
       // Swiped left
-      print('Swiped left on index: $previousIndex');
-    
+    } else if (direction.name == 'left') {
+      // Do nothing
     }
     return true; 
   }
