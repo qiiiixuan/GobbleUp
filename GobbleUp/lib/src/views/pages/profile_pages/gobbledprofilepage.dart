@@ -17,7 +17,7 @@ class GobbledProfilePage extends StatefulWidget {
 class _GobbledProfilePageState extends State<GobbledProfilePage> {
 
   Future<Map<String, dynamic>?> restaurantFuture = DatabaseService().getRestaurant(
-      uid: AuthService().currentUser!.uid,
+      gobbledUid: AuthService().currentUser!.uid,
   );
 
   @override

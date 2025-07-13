@@ -15,24 +15,20 @@ class GobblerHomePage extends StatefulWidget {
 }
 
 class _GobblerHomePageState extends State<GobblerHomePage> {
-  int currentIndex = 0;
   final User? user = AuthService().currentUser;
 
-   List<Future<Map<String, dynamic>?>> restaurantFutures = [
-    DatabaseService().getRandomRestaurant(),
-    DatabaseService().getRandomRestaurant(),
-    DatabaseService().getRandomRestaurant(),
-    DatabaseService().getRandomRestaurant(),
+   List<Future<Map<String, dynamic>?>?> restaurantFutures = [
+    DatabaseService().getRandomRestaurant(gobblerUid: AuthService().currentUser?.uid),
+    DatabaseService().getRandomRestaurant(gobblerUid: AuthService().currentUser?.uid),
   ];
 
   //Reload and fetch new restaurants
   void _loadNewRestaurants() {
     setState(() {
+      Future<Map<String, dynamic>?>? randomRestaurant = restaurantFutures[0];
       restaurantFutures = [
-        DatabaseService().getRandomRestaurant(),
-        DatabaseService().getRandomRestaurant(),
-        DatabaseService().getRandomRestaurant(),
-        DatabaseService().getRandomRestaurant(),
+        randomRestaurant,
+        DatabaseService().getRandomRestaurant(gobblerUid: user!.uid),
       ];
     });
   }
@@ -67,19 +63,18 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
       ),
 
       // This is the hinge like cards 
-      body: CardSwiper(
+      body: restaurantFutures[0] != null ? CardSwiper(
         padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
         cardsCount: restaurantFutures.length,
         cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
-          return RestaurantCardFuture(future: restaurantFutures[index]);
+          return RestaurantCardFuture(future: restaurantFutures[index]!);
         },
         onEnd: () => setState(() {
-          currentIndex = 0; // Reset index when swiping ends
           _loadNewRestaurants(); // Load new restaurants
         }),
         isLoop: true,
         onSwipe: _onSwipe,
-      ),
+      ) : Text("You have run out of food"),
     );
   }
 
