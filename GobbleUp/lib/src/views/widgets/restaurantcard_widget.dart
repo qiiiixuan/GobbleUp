@@ -1,10 +1,30 @@
 import 'package:GobbleUp/src/data/constants.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 class RestaurantCardFuture extends StatelessWidget {
   final Future<Map<String, dynamic>?> future;
 
   const RestaurantCardFuture({super.key, required this.future});
+
+  Future<List<String>> getimageUrls() async{
+    final ref = FirebaseDatabase.instance.ref().child('images');
+    final snapshot = await ref.get();
+
+    if(snapshot.exists) {
+      final data = snapshot.value as Map<dynamic, dynamic>;
+      List<String> imageUrls = [];
+
+      data.forEach((key, value) {
+        imageUrls.add(value['image']); 
+      });
+
+      return imageUrls;
+    }
+    return [];
+
+
+  }
 
   @override
   Widget build(BuildContext context) {
