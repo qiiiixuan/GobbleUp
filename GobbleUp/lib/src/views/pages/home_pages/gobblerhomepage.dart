@@ -17,12 +17,15 @@ class GobblerHomePage extends StatefulWidget {
 class _GobblerHomePageState extends State<GobblerHomePage> {
   final User? user = AuthService().currentUser;
 
-   List<Future<Map<String, dynamic>?>?> restaurantFutures = [
+  // Todo: Handle null cases (when getRandomRestaurant returns Future<null>)
+  // Todo: How to ensure second random is different from first random?
+  List<Future<Map<String, dynamic>?>?> restaurantFutures = [
     DatabaseService().getRandomRestaurant(gobblerUid: AuthService().currentUser?.uid),
     DatabaseService().getRandomRestaurant(gobblerUid: AuthService().currentUser?.uid),
   ];
 
-  //Reload and fetch new restaurants
+  // Reload and fetch new restaurants
+  // Todo: buggy index 0 or 1?
   void _loadNewRestaurants() {
     setState(() {
       Future<Map<String, dynamic>?>? randomRestaurant = restaurantFutures[0];
