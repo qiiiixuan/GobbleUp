@@ -16,30 +16,32 @@ class GobblerHomePage extends StatefulWidget {
 
 class _GobblerHomePageState extends State<GobblerHomePage> {
   final User? user = AuthService().currentUser;
-
-  // Todo: Handle null cases (when getRandomRestaurant returns Future<null>)
-  // Todo: How to ensure second random is different from first random?
-  List<Future<Map<String, dynamic>?>?> restaurantFutures = [
-    DatabaseService().getRandomRestaurant(gobblerUid: AuthService().currentUser?.uid),
-    DatabaseService().getRandomRestaurant(gobblerUid: AuthService().currentUser?.uid),
-  ];
-
-  // Reload and fetch new restaurants
-  // Todo: buggy index 0 or 1?
-  void _loadNewRestaurants() {
-    setState(() {
-      Future<Map<String, dynamic>?>? randomRestaurant = restaurantFutures[0];
-      restaurantFutures = [
-        randomRestaurant,
-        DatabaseService().getRandomRestaurant(gobblerUid: user!.uid),
-      ];
-    });
-  }
+  List<Future<Map<String, dynamic>>> restaurantFutures = [];
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
+    loadCardDeck();
   }
+
+  // Load card deck of restaurants
+  Future<void> loadCardDeck() async {
+    restaurantFutures = await DatabaseService().getRandomRestaurants(
+      gobblerUid: user?.uid,
+    );
+    setState(() {
+      loading = false;
+    });
+  }
+
+  // Reload and fetch new restaurants
+  // void _loadNewRestaurants() {
+  //   setState(() {
+  //     restaurantFutures.removeAt(0);
+  //     restaurantFutures.removeAt(0);
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -66,18 +68,23 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
       ),
 
       // This is the hinge like cards 
-      body: restaurantFutures[0] != null ? CardSwiper(
-        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
-        cardsCount: restaurantFutures.length,
-        cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
-          return RestaurantCardFuture(future: restaurantFutures[index]!);
-        },
-        onEnd: () => setState(() {
-          _loadNewRestaurants(); // Load new restaurants
-        }),
-        isLoop: true,
-        onSwipe: _onSwipe,
-      ) : Text("You have run out of food"),
+      body: loading
+          ? Center(child: CircularProgressIndicator(),)
+          : restaurantFutures.isNotEmpty
+          ? CardSwiper(
+            padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+            cardsCount: restaurantFutures.length, // will take too long once database is big
+            cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+              return RestaurantCardFuture(future: restaurantFutures[index]);
+            },
+            onEnd: () => setState(() {
+              // _loadNewRestaurants(); // Load new restaurants
+              restaurantFutures.clear(); // clear list
+            }),
+            isLoop: false,
+            onSwipe: _onSwipe,
+          )
+          : Center(child: Text("You have run out of food"),),
     );
   }
 
@@ -91,7 +98,7 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
     // Swiped right
     if (direction.name == 'right') {
       Map<String, dynamic>? restaurantData = await restaurantFutures[previousIndex];
-      if (restaurantData != null) {
+      if (restaurantData.isNotEmpty) {
         // Save restaurant data
         await DatabaseService().update(
             path: 'Gobbler/${user!.uid}/savedRestaurants',

@@ -13,13 +13,18 @@ class DatabaseService {
     await ref.set(data);
   }
 
-  // Randomly generate restaurant for gobbler
-  Future<Map<String, dynamic>?>? getRandomRestaurant({required String? gobblerUid}) async {
+  // Randomly generate a card deck of restaurants for gobbler
+  Future<List<Future<Map<String, dynamic>>>> getRandomRestaurants({required String? gobblerUid}) async {
     final DatabaseReference ref = _firebaseDatabase.ref('Gobbled');
     final DataSnapshot snapshot = await ref.get();
+    List<Future<Map<String, dynamic>>> cardDeck = [];
+    Map<dynamic, dynamic> data;
+    List<dynamic> keys;
+    dynamic randomKey;
+    Map<String, dynamic> restaurantData;
     
     if (snapshot.exists && gobblerUid != null) {
-      final data = snapshot.value as Map<dynamic, dynamic>;
+      data = snapshot.value as Map<dynamic, dynamic>;
 
       // Obtain and remove saved restaurants from card deck
       final DataSnapshot? savedRestaurants = await DatabaseService().read(path: 'Gobbler/$gobblerUid/savedRestaurants');
@@ -31,15 +36,16 @@ class DatabaseService {
         }
       }
 
-      // Randomly pick a restaurant from deck
-      if (data.isNotEmpty) {
-        final keys = data.keys.toList();
-        final randomKey = keys[Random().nextInt(keys.length)];
-        final restaurantData = Map<String, dynamic>.from(data[randomKey]);
-        return restaurantData;
+      // Randomly arrange restaurants in deck (will take to long once database is big)
+      while (data.isNotEmpty) {
+        keys = data.keys.toList();
+        randomKey = keys[Random().nextInt(keys.length)];
+        restaurantData = Map<String, dynamic>.from(data[randomKey]);
+        cardDeck.add(Future.value(restaurantData));
+        data.remove(randomKey);
       }
     }
-    return null;
+    return cardDeck;
   }
 
   // Obtain current restaurant data
