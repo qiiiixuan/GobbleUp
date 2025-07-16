@@ -61,7 +61,7 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
           ),
         ),
         title: Text(
-          'Gobbler',
+          'Explore',
           style: KTextStyle.titleTextStyle,
         ),
         automaticallyImplyLeading: false, // Disable back button
@@ -69,22 +69,22 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
 
       // This is the hinge like cards 
       body: loading
-          ? Center(child: CircularProgressIndicator(),)
-          : restaurantFutures.isNotEmpty
-          ? CardSwiper(
-            padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
-            cardsCount: restaurantFutures.length, // will take too long once database is big
-            cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
-              return RestaurantCardFuture(future: restaurantFutures[index]);
-            },
-            onEnd: () => setState(() {
-              // _loadNewRestaurants(); // Load new restaurants
-              restaurantFutures.clear(); // clear list
-            }),
-            isLoop: false,
-            onSwipe: _onSwipe,
-          )
-          : Center(child: Text("You have run out of food"),),
+      ? Center(child: CircularProgressIndicator(),)
+      : restaurantFutures.isNotEmpty
+      ? CardSwiper(
+        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+        cardsCount: restaurantFutures.length, // will take too long once database is big
+        cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
+          return RestaurantCardFuture(future: restaurantFutures[index]);
+        },
+        onEnd: () => setState(() {
+          // _loadNewRestaurants(); // Load new restaurants
+          restaurantFutures.clear(); // clear list
+        }),
+        isLoop: false,
+        onSwipe: _onSwipe,
+      )
+      : Center(child: Text("You have run out of food"),),
     );
   }
 

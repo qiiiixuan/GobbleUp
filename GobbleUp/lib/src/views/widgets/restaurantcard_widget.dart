@@ -176,7 +176,7 @@ class RestaurantCardFuture extends StatelessWidget {
                       color: Colors.white70,
                       borderRadius: BorderRadius.circular(15.0),
                     ),
-                  padding: EdgeInsets.all(10.0),
+                    padding: EdgeInsets.all(10.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

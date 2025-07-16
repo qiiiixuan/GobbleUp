@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../profile_pages/gobblerprofilepage.dart';
 import 'gobblerhomepage.dart';
+import 'gobblersavedpage.dart';
 
 class GobblerRootPage extends StatefulWidget {
   const GobblerRootPage({super.key});
@@ -10,9 +11,10 @@ class GobblerRootPage extends StatefulWidget {
 }
 
 class _GobblerRootPageState extends State<GobblerRootPage> {
-  int currentIndex = 0;
+  int currentIndex = 1;
 
   final _navigatorKeys = [
+    GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
@@ -46,8 +48,9 @@ class _GobblerRootPageState extends State<GobblerRootPage> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildOffstageNavigator(0, GobblerHomePage()),
-          _buildOffstageNavigator(1, GobblerProfilePage()),
+          _buildOffstageNavigator(0, GobblerSavedPage()),
+          _buildOffstageNavigator(1, GobblerHomePage()),
+          _buildOffstageNavigator(2, GobblerProfilePage()),
         ],
       ),
       
@@ -57,8 +60,12 @@ class _GobblerRootPageState extends State<GobblerRootPage> {
         backgroundColor: const Color.fromARGB(255, 240, 162, 162),
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.restaurant),
+            label: 'Saved',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.explore),
+            label: 'Explore',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
