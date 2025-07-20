@@ -14,13 +14,15 @@ class GobbleUpDateProfilePage extends StatefulWidget {
 
 class _GobbleUpDateProfilePageState extends State<GobbleUpDateProfilePage> {
 
+  //Data to be changed to
   TextEditingController emailController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-  // TextEditingController passwordController = TextEditingController();
   TextEditingController MRTController = TextEditingController();
   TextEditingController signatureController = TextEditingController();
   TextEditingController environmentController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController ImageController = TextEditingController();
+
 
   String? selectedPriceRange;
   String? selectedCuisine;
@@ -34,6 +36,8 @@ class _GobbleUpDateProfilePageState extends State<GobbleUpDateProfilePage> {
     'Mexican',
     'Japanese',
     'Thai',
+    'Vegetarian',
+    'Other',
    
   ];
 
@@ -59,6 +63,8 @@ class _GobbleUpDateProfilePageState extends State<GobbleUpDateProfilePage> {
         'Description': descriptionController.text,
         'Cuisine': selectedCuisine,
         'PriceRange': selectedPriceRange,
+        'Image': ImageController.text,
+
       }
       );
       Navigator.of(context, rootNavigator: true).pushAndRemoveUntil(
@@ -205,6 +211,15 @@ class _GobbleUpDateProfilePageState extends State<GobbleUpDateProfilePage> {
               controller: descriptionController,
               decoration: InputDecoration(
                 labelText: 'Describe your restaurant in 5 words or less',
+              ),
+            ),
+
+            const SizedBox(height: 20.0),
+
+            TextField(
+              controller: ImageController,
+              decoration: InputDecoration(
+                labelText: 'Image URL ending with .jgp / .png (leave blank for default)',
               ),
             ),
 

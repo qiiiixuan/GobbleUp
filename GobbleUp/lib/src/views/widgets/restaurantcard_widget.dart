@@ -7,24 +7,24 @@ class RestaurantCardFuture extends StatelessWidget {
 
   const RestaurantCardFuture({super.key, required this.future});
 
-  // Future<List<String>> getimageUrls() async{
-  //   final ref = FirebaseDatabase.instance.ref().child('.read');
-  //   final snapshot = await ref.get();
+  Future<List<String>> getimageUrls() async{
+    final ref = FirebaseDatabase.instance.ref().child('.read');
+    final snapshot = await ref.get();
 
-  //   if(snapshot.exists) {
-  //     final data = snapshot.value as Map<dynamic, dynamic>;
-  //     List<String> imageUrls = [];
+    if(snapshot.exists) {
+      final data = snapshot.value as Map<dynamic, dynamic>;
+      List<String> imageUrls = [];
 
-  //     data.forEach((key, value) {
-  //       imageUrls.add(value['Image']); 
-  //     });
+      data.forEach((key, value) {
+        imageUrls.add(value['Image']); 
+      });
 
-  //     return imageUrls;
-  //   }
-  //   return [];
+      return imageUrls;
+    }
+    return [];
 
 
-  // }
+  }
 
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
@@ -58,8 +58,9 @@ class RestaurantCardFuture extends StatelessWidget {
                       image: 
                       DecorationImage(
                         image: 
-                        // NetworkImage(
-                        //   restaurant['Image']),
+                        restaurant['Image'] != null ?
+                         NetworkImage(
+                          restaurant['Image'].replaceAll(" ",'')):
                          AssetImage('assets/images/default_image.png'),
                         fit: BoxFit.cover,
                         alignment: Alignment.topCenter,

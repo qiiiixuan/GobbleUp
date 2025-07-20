@@ -1,6 +1,7 @@
 import 'package:GobbleUp/src/data/constants.dart';
 import 'package:GobbleUp/src/services/auth_service.dart';
 import 'package:GobbleUp/src/services/database_service.dart';
+import 'package:GobbleUp/src/views/pages/home_pages/gobblerfilterpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +18,10 @@ class GobblerHomePage extends StatefulWidget {
 class _GobblerHomePageState extends State<GobblerHomePage> {
   final User? user = AuthService().currentUser;
   List<Future<Map<String, dynamic>>> restaurantFutures = [];
+
+  List<String> filteredCuisines = [];
+  String filteredPriceRange = '';
+
   bool loading = true;
 
   @override
@@ -65,50 +70,89 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
           style: KTextStyle.titleTextStyle,
         ),
         automaticallyImplyLeading: false, // Disable back button
+        actions: [
+          IconButton(
+            onPressed: () async {
+              FilterData? filterData = await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) {
+                    return GobblerFilterPage();
+                  },
+                ),
+              );
+
+              // If filterData is not null, update the state with the new filters
+              if (filterData != null) {
+                setState(() {
+                  filteredCuisines = filterData.cuisines;
+                  filteredPriceRange = filterData.priceRange;
+
+                  //print filtered cuisines to check if they are correct
+                  print(filteredCuisines);
+                  print(filteredPriceRange);
+                });
+              }
+            },
+            icon: const Icon(Icons.filter_alt),
+            iconSize: 40,
+          )
+        ],
       ),
 
-      // This is the hinge like cards 
+      // This is the hinge like cards
       body: loading
-      ? Center(child: CircularProgressIndicator(),)
-      : restaurantFutures.isNotEmpty
-      ? CardSwiper(
-        padding: EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
-        cardsCount: restaurantFutures.length, // will take too long once database is big
-        cardBuilder: (context, index, percentThresholdX, percentThresholdY) {
-          return RestaurantCardFuture(future: restaurantFutures[index]);
-        },
-        onEnd: () => setState(() {
-          // _loadNewRestaurants(); // Load new restaurants
-          restaurantFutures.clear(); // clear list
-        }),
-        isLoop: false,
-        onSwipe: _onSwipe,
-      )
-      : Center(child: Text("You have run out of food"),),
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : restaurantFutures.isNotEmpty
+              ? CardSwiper(
+                  padding:
+                      EdgeInsets.symmetric(vertical: 0.0, horizontal: 20.0),
+                  cardsCount: restaurantFutures
+                      .length, // will take too long once database is big
+                  cardBuilder:
+                      (context, index, percentThresholdX, percentThresholdY) {
+                    return RestaurantCardFuture(
+                        future: restaurantFutures[index]);
+                  },
+                  onEnd: () => setState(() {
+                    // _loadNewRestaurants(); // Load new restaurants
+                    restaurantFutures.clear(); // clear list
+                  }),
+                  isLoop: false,
+                  onSwipe: _onSwipe,
+                )
+              : Center(
+                  child: Text("You have run out of food"),
+                ),
     );
   }
 
   // Handle swipe actions
-  Future<bool> _onSwipe(int previousIndex, int? currentIndex, CardSwiperDirection direction) async{
-
+  Future<bool> _onSwipe(int previousIndex, int? currentIndex,
+      CardSwiperDirection direction) async {
     // Get current length of savedRestaurants
-    DataSnapshot? savedRestaurants = await DatabaseService().read(path: 'Gobbler/${user!.uid}/savedRestaurants');
-    int length = savedRestaurants != null ? savedRestaurants.children.length : 0;
+    DataSnapshot? savedRestaurants = await DatabaseService()
+        .read(path: 'Gobbler/${user!.uid}/savedRestaurants');
+    int length =
+        savedRestaurants != null ? savedRestaurants.children.length : 0;
 
     // Swiped right
     if (direction.name == 'right') {
-      Map<String, dynamic>? restaurantData = await restaurantFutures[previousIndex];
+      Map<String, dynamic>? restaurantData =
+          await restaurantFutures[previousIndex];
       if (restaurantData.isNotEmpty) {
         // Save restaurant data
         await DatabaseService().update(
-            path: 'Gobbler/${user!.uid}/savedRestaurants',
-            data: {'listItem${length + 1}' : restaurantData['uid']},
+          path: 'Gobbler/${user!.uid}/savedRestaurants',
+          data: {'listItem${length + 1}': restaurantData['uid']},
         );
       }
       // Swiped left
     } else if (direction.name == 'left') {
       // Do nothing
     }
-    return true; 
+    return true;
   }
 }

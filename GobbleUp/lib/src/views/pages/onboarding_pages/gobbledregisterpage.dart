@@ -23,6 +23,8 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
   TextEditingController signatureController = TextEditingController();
   TextEditingController environmentController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController ImageController = TextEditingController();
+
 
   String? selectedPriceRange;
   String? selectedCuisine;
@@ -36,6 +38,9 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
     'Mexican',
     'Japanese',
     'Thai',
+    'Vegetarian',
+    'Other',
+
    
   ];
 
@@ -73,6 +78,7 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
           'SignatureDish': signatureController.text,
           'Environment': environmentController.text,
           'Description': descriptionController.text,
+          'Image': ImageController.text,
         },
       );
       Navigator.pushReplacement(
@@ -230,6 +236,15 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
               controller: descriptionController,
               decoration: InputDecoration(
                 labelText: 'Describe your restaurant in 5 words or less',
+              ),
+            ),
+
+          const SizedBox(height: 20.0),
+
+            TextField(
+              controller: ImageController,
+              decoration: InputDecoration(
+                labelText: 'Image URL ending with .jgp / .png (leave blank for default)',
               ),
             ),
 
