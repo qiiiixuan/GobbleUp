@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:GobbleUp/src/services/auth_service.dart';
 import 'package:GobbleUp/src/views/pages/onboarding_pages/gobblerloginpage.dart';
-import 'package:GobbleUp/src/views/pages/home_pages/gobblerrootpage.dart';
+import 'package:GobbleUp/src/views/pages/gobbler_pages/gobblerrootpage.dart';
 
 class AuthLayout extends StatelessWidget {
   const AuthLayout({

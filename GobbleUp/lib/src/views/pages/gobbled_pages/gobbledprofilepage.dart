@@ -1,7 +1,7 @@
 import 'package:GobbleUp/src/data/constants.dart';
 import 'package:GobbleUp/src/services/auth_service.dart';
 import 'package:GobbleUp/src/services/database_service.dart';
-import 'package:GobbleUp/src/views/pages/profile_pages/gobbledupdateprofilepage.dart';
+import 'package:GobbleUp/src/views/pages/gobbled_pages/gobbledupdateprofilepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/restaurantcard_widget.dart';

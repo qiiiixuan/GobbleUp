@@ -1,4 +1,4 @@
-import 'package:GobbleUp/src/views/pages/home_pages/gobbledrootpage.dart';
+import 'package:GobbleUp/src/views/pages/gobbled_pages/gobbledrootpage.dart';
 import 'package:GobbleUp/src/views/pages/onboarding_pages/gobbledloginpage.dart';
 import 'package:flutter/material.dart';
 import 'package:GobbleUp/src/services/auth_service.dart';

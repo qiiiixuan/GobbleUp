@@ -1,7 +1,7 @@
 import 'package:GobbleUp/src/data/constants.dart';
 import 'package:GobbleUp/src/services/auth_service.dart';
 import 'package:GobbleUp/src/services/database_service.dart';
-import 'package:GobbleUp/src/views/pages/home_pages/gobblerfilterpage.dart';
+import 'package:GobbleUp/src/views/pages/gobbler_pages/gobblerfilterpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';

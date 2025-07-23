@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../profile_pages/gobblerprofilepage.dart';
+import '../gobbled_pages/gobblerprofilepage.dart';
 import 'gobblerhomepage.dart';
 import 'gobblersavedpage.dart';
 

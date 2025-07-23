@@ -1,4 +1,4 @@
-import '../profile_pages/gobbledprofilepage.dart';
+import 'gobbledprofilepage.dart';
 import 'package:flutter/material.dart';
 import 'gobbledhomepage.dart';
 
