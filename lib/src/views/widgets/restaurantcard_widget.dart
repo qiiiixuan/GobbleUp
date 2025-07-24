@@ -26,6 +26,7 @@ class RestaurantCardFuture extends StatelessWidget {
 
   }
 
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<Map<String, dynamic>?>(
       future: future,
