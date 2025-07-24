@@ -30,13 +30,34 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
     loadCardDeck();
   }
 
-  // Load card deck of restaurants
+    // Load card deck of restaurants
   Future<void> loadCardDeck() async {
-    restaurantFutures = await DatabaseService().getRandomRestaurants(
+    // First, ensure that we're starting fresh by clearing the current list
+    setState(() {
+      loading = true; // Set loading to true while fetching data
+    });
+
+    List<Future<Map<String, dynamic>>> fetchedRestaurantFutures = await DatabaseService().getRandomRestaurants(
       gobblerUid: user?.uid,
     );
+
+    // Now, filter the restaurants based on the applied filters
+    List<Future<Map<String, dynamic>>> filteredRestaurantFutures = [];
+
+    for (var future in fetchedRestaurantFutures) {
+      Map<String, dynamic>? restaurantData = await future;
+      bool matchesCuisine = filteredCuisines.isEmpty || filteredCuisines.contains(restaurantData['Cuisine']);
+      bool matchesPriceRange = filteredPriceRange.isEmpty || restaurantData['PriceRange'] == filteredPriceRange;
+
+      if (matchesCuisine && matchesPriceRange) {
+        filteredRestaurantFutures.add(future);
+      }
+    }
+
+    // After filtering, update the restaurantFutures list with filtered results
     setState(() {
-      loading = false;
+      restaurantFutures = filteredRestaurantFutures; // Update with filtered list
+      loading = false; // Set loading to false once data is ready
     });
   }
 
@@ -75,23 +96,17 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
             onPressed: () async {
               FilterData? filterData = await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return GobblerFilterPage();
-                  },
-                ),
+                MaterialPageRoute(builder: (context) => GobblerFilterPage()),
               );
 
-              // If filterData is not null, update the state with the new filters
               if (filterData != null) {
                 setState(() {
                   filteredCuisines = filterData.cuisines;
                   filteredPriceRange = filterData.priceRange;
-
-                  //print filtered cuisines to check if they are correct
-                  print(filteredCuisines);
-                  print(filteredPriceRange);
+                  loading = true; // Show loading when filters are applied
                 });
+              //TODO Fix function call
+                // await loadCardDeck(); // Reload the card deck with new filters
               }
             },
             icon: const Icon(Icons.filter_alt),
