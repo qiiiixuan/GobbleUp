@@ -9,7 +9,14 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import '../../widgets/restaurantcard_widget.dart';
 
 class GobblerHomePage extends StatefulWidget {
-  const GobblerHomePage({super.key});
+
+  final List<String> filteredCuisines;
+  final String filteredPriceRange;
+
+  const GobblerHomePage({
+  super.key,
+  required List<String> this.filteredCuisines,
+  required String this.filteredPriceRange,});
 
   @override
   State<GobblerHomePage> createState() => _GobblerHomePageState();
@@ -17,10 +24,8 @@ class GobblerHomePage extends StatefulWidget {
 
 class _GobblerHomePageState extends State<GobblerHomePage> {
   final User? user = AuthService().currentUser;
-  List<Future<Map<String, dynamic>>> restaurantFutures = [];
+  List<Map<String, dynamic>> restaurantFutures = [];
 
-  List<String> filteredCuisines = [];
-  String filteredPriceRange = '';
 
   bool loading = true;
 
@@ -30,13 +35,38 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
     loadCardDeck();
   }
 
-  // Load card deck of restaurants
+    // Load card deck of restaurants
   Future<void> loadCardDeck() async {
-    restaurantFutures = await DatabaseService().getRandomRestaurants(
-      gobblerUid: user?.uid,
-    );
+
     setState(() {
-      loading = false;
+      loading = true; // Set loading to true while fetching data
+    });
+
+    List<Future<Map<String, dynamic>>> fetchedRestaurantFutures = await DatabaseService().getRandomRestaurants(
+      gobblerUid: user?.uid,);
+
+    List<Map<String, dynamic>> fetchedRestaurants = await Future.wait(fetchedRestaurantFutures);
+
+    // Now, filter the restaurants based on the applied filters
+    List<Map<String, dynamic>> filteredRestaurantFutures = [];
+
+     for (var restaurantData in fetchedRestaurants){
+      bool matchesCuisine = widget.filteredCuisines.isEmpty || widget.filteredCuisines.contains(restaurantData['Cuisine']);
+      bool matchesPriceRange = widget.filteredPriceRange.isEmpty || restaurantData['PriceRange'] == widget.filteredPriceRange;
+      print("Cuisine: ${restaurantData['Cuisine']}, PriceRange: ${restaurantData['PriceRange']}");
+
+      if (matchesCuisine && matchesPriceRange) {
+        print("Restaurant matches filters: ${restaurantData['username']}");
+        filteredRestaurantFutures.add(restaurantData);
+      }
+    }
+
+    // After filtering, update the restaurantFutures list with filtered results
+    setState(() {
+      
+      restaurantFutures = filteredRestaurantFutures; // Update with filtered list
+      print(restaurantFutures.length);
+      loading = false; // Set loading to false once data is ready
     });
   }
 
@@ -75,23 +105,23 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
             onPressed: () async {
               FilterData? filterData = await Navigator.push(
                 context,
-                MaterialPageRoute(
-                  builder: (context) {
-                    return GobblerFilterPage();
-                  },
-                ),
+                MaterialPageRoute(builder: (context) => GobblerFilterPage()),
               );
 
-              // If filterData is not null, update the state with the new filters
               if (filterData != null) {
-                setState(() {
-                  filteredCuisines = filterData.cuisines;
-                  filteredPriceRange = filterData.priceRange;
+                  
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => 
+                      GobblerHomePage(
+                      filteredCuisines: filterData.cuisines,
+                      filteredPriceRange: filterData.priceRange,
+                      ),
+                    ),
+                    (route) => false,
 
-                  //print filtered cuisines to check if they are correct
-                  print(filteredCuisines);
-                  print(filteredPriceRange);
-                });
+                  );
               }
             },
             icon: const Icon(Icons.filter_alt),
@@ -114,7 +144,7 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
                   cardBuilder:
                       (context, index, percentThresholdX, percentThresholdY) {
                     return RestaurantCardFuture(
-                        future: restaurantFutures[index]);
+                        future: Future.value(restaurantFutures[index]));
                   },
                   onEnd: () => setState(() {
                     // _loadNewRestaurants(); // Load new restaurants

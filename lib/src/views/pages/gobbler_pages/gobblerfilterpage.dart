@@ -33,12 +33,13 @@ class _GobblerFilterPageState extends State<GobblerFilterPage> {
    'Other',
   ];
 
-  final Map<int, String> priceRange = {
+  final Map<int, String?> priceRange = {
     0: 'Less than \$10',
     1: '\$10 - \$20',
     2: '\$20 - \$30',
     3: '\$30 - \$40',
     4: 'More than \$40',
+    5: null
   };
 
   final Map<int,String> Cuisine = {
@@ -118,16 +119,16 @@ class _GobblerFilterPageState extends State<GobblerFilterPage> {
 
               // Display the selected price range
               Text(
-                'Price : ${selectVal == 0 ? 'Less than \$10' : selectVal == 1 ? 'Between \$10 - \$20' : selectVal == 2 ? 'Between \$20 - \$30' : selectVal == 3 ? 'Between \$30 - \$40' : 'More than \$40'}',
+                'Price : ${selectVal == 0 ? 'Less than \$10' : selectVal == 1 ? 'Between \$10 - \$20' : selectVal == 2 ? 'Between \$20 - \$30' : selectVal == 3 ? 'Between \$30 - \$40' : selectVal == 4?  'More than \$40' : 'Any Price Range'}',
                 style: KTextStyle.normalTextStyle,
               ),
 
               // Slider for price range selection
               Slider(
                 min: 0,
-                max: 4,
+                max: 5,
                 value: selectVal,
-                divisions: 4,
+                divisions: 5,
                 onChanged: (newVal) {
                   setState(() {
                     selectVal = newVal;
@@ -183,7 +184,8 @@ class _GobblerFilterPageState extends State<GobblerFilterPage> {
                     // send the selected filters back to the GobblerHomePage
                     FilterData filterData = FilterData(
                       cuisines: selectCat.map((index) => Cuisine[index]!).toList(),
-                      priceRange: priceRange[selectVal.toInt()]!,
+                      priceRange: 
+                      priceRange[selectVal.toInt()]!,
                     );
                     Navigator.pop(context, filterData);
                   },
