@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../gobbled_pages/gobblerprofilepage.dart';
+import 'gobblerprofilepage.dart';
 import 'gobblerhomepage.dart';
 import 'gobblersavedpage.dart';
 
@@ -55,7 +55,7 @@ class _GobblerRootPageState extends State<GobblerRootPage> {
       body: Stack(
         children: [
           _buildOffstageNavigator(0, GobblerSavedPage(key: _savedPageKey,)),
-          _buildOffstageNavigator(1, GobblerHomePage()),
+          _buildOffstageNavigator(1, GobblerHomePage(filteredCuisines: [], filteredPriceRange: '')),
           _buildOffstageNavigator(2, GobblerProfilePage()),
         ],
       ),

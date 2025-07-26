@@ -5,6 +5,10 @@ import 'package:flutter/material.dart';
 class RestaurantCardFuture extends StatelessWidget {
   final Future<Map<String, dynamic>?> future;
 
+  //list of filtered cuisines and price range
+  // List<String> filteredCuisines = [];
+  // String filteredPriceRange = '';
+
   const RestaurantCardFuture({super.key, required this.future});
 
   Future<List<String>> getimageUrls() async{
