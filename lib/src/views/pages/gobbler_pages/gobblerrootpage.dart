@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../gobbled_pages/gobblerprofilepage.dart';
+import 'gobblerprofilepage.dart';
 import 'gobblerhomepage.dart';
 import 'gobblersavedpage.dart';
 
@@ -18,6 +18,9 @@ class _GobblerRootPageState extends State<GobblerRootPage> {
     GlobalKey<NavigatorState>(),
     GlobalKey<NavigatorState>(),
   ];
+
+  final GlobalKey<GobblerSavedPageState> _savedPageKey = GlobalKey<GobblerSavedPageState>();
+
   void _onTapped(int index) {
     if (index == currentIndex) {
       // If the same tab is tapped, pop to the root of that tab
@@ -26,6 +29,9 @@ class _GobblerRootPageState extends State<GobblerRootPage> {
       setState(() {
         currentIndex = index;
       });
+    }
+    if (index == 0) {
+      _savedPageKey.currentState?.refreshPage();
     }
   }
 
@@ -48,8 +54,8 @@ class _GobblerRootPageState extends State<GobblerRootPage> {
     return Scaffold(
       body: Stack(
         children: [
-          _buildOffstageNavigator(0, GobblerSavedPage()),
-          _buildOffstageNavigator(1, GobblerHomePage()),
+          _buildOffstageNavigator(0, GobblerSavedPage(key: _savedPageKey,)),
+          _buildOffstageNavigator(1, GobblerHomePage(filteredCuisines: [], filteredPriceRange: '')),
           _buildOffstageNavigator(2, GobblerProfilePage()),
         ],
       ),

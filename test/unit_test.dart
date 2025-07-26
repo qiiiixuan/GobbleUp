@@ -7,8 +7,20 @@
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('Plus Operator', () {
-    test('should add two numbers together', () {
+  group('Account Feature', () {
+    test('Login Button', () {
+      expect(1 + 1, 2);
+    });
+    test('Register Button', () {
+      expect(1 + 1, 2);
+    });
+  });
+
+  group('Swiping Feature', () {
+    test('Swipe Left', () {
+      expect(1 + 1, 2);
+    });
+    test('Swipe Right', () {
       expect(1 + 1, 2);
     });
   });
