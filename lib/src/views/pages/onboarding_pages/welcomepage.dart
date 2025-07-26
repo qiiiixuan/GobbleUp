@@ -1,6 +1,7 @@
 import 'package:GobbleUp/src/services/auth_layout_gobbler.dart';
 import 'package:GobbleUp/src/services/auth_layout_gobbled.dart';
 import 'package:GobbleUp/src/data/constants.dart';
+import 'package:GobbleUp/src/views/pages/onboarding_pages/welcomehelppage.dart';
 import 'package:flutter/material.dart';
 
 class WelcomePage extends StatelessWidget {
@@ -89,6 +90,18 @@ class WelcomePage extends StatelessWidget {
             ],
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => WelcomeHelpPage(),
+            ),
+          );
+        },
+        child: Icon(Icons.question_mark_rounded, size: 30.0),
+        backgroundColor: Color(0xFFFF8989), // Replace with your desired color
       ),
     );
   }

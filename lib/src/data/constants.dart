@@ -15,6 +15,12 @@ class KTextStyle {
     color: Colors.black54,
   );
 
+  // Text style for normal text with larger size
+  static const normalTextStyleWithSize = TextStyle(
+    fontSize: 22.0,
+    color: Colors.black87,
+  );
+
   // Text style for button text
   static const buttonTextStyle = TextStyle(
     fontSize: 16.0,

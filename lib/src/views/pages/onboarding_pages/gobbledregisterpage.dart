@@ -24,6 +24,8 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
   TextEditingController environmentController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   TextEditingController ImageController = TextEditingController();
+  TextEditingController InstagramController = TextEditingController();
+ TextEditingController FacebookController = TextEditingController();
 
 
   String? selectedPriceRange;
@@ -79,6 +81,9 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
           'Environment': environmentController.text,
           'Description': descriptionController.text,
           'Image': ImageController.text,
+          'Instagram': InstagramController.text,
+         'Facebook': FacebookController.text,
+
         },
       );
       Navigator.pushReplacement(
@@ -247,6 +252,30 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
                 labelText: 'Image URL ending with .jgp / .png (leave blank for default)',
               ),
             ),
+
+
+
+           const SizedBox(height: 20.0),
+
+
+           TextField(
+             controller: InstagramController,
+             decoration: InputDecoration(
+               labelText: 'Instragram URL (leave blank for default)',
+             ),
+           ),
+
+
+           const SizedBox(height: 20.0),
+
+
+           TextField(
+             controller: FacebookController,
+             decoration: InputDecoration(
+               labelText: 'Facebook URL (leave blank for default)',
+             ),
+           ),
+
 
             const SizedBox(height: 50.0),
 

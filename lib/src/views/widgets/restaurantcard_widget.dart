@@ -1,221 +1,323 @@
+import 'dart:io';
+
+
 import 'package:GobbleUp/src/data/constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class RestaurantCardFuture extends StatelessWidget {
-  final Future<Map<String, dynamic>?> future;
-
-  //list of filtered cuisines and price range
-  // List<String> filteredCuisines = [];
-  // String filteredPriceRange = '';
-
-  const RestaurantCardFuture({super.key, required this.future});
-
-  Future<List<String>> getimageUrls() async{
-    final ref = FirebaseDatabase.instance.ref().child('.read');
-    final snapshot = await ref.get();
-
-    if(snapshot.exists) {
-      final data = snapshot.value as Map<dynamic, dynamic>;
-      List<String> imageUrls = [];
-
-      data.forEach((key, value) {
-        imageUrls.add(value['Image']); 
-      });
-
-      return imageUrls;
-    }
-    return [];
+ final Future<Map<String, dynamic>?> future;
 
 
-  }
+ //list of filtered cuisines and price range
+ // List<String> filteredCuisines = [];
+ // String filteredPriceRange = '';
 
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<Map<String, dynamic>?>(
-      future: future,
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return Center(child: CircularProgressIndicator());
-        } else if (snapshot.hasError) {
-          return Center(child: Text('Error: ${snapshot.error}'));
-        } else if (!snapshot.hasData || snapshot.data == null) {
-          return Center(child: Text('No restaurant data available.'));
-        } else {
-          final restaurant = snapshot.data!;
-          return SingleChildScrollView(
-            child: Card(
-              elevation: 8,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(25),
-              ),
-              clipBehavior: Clip.antiAlias,
-              color: Color(0xFFFCAEAE),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
 
-                  Container(
-                    height: MediaQuery.of(context).size.width,
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                      image: 
-                      DecorationImage(
-                        image: 
-                        restaurant['Image'] != null ?
-                         NetworkImage(
-                          restaurant['Image'].replaceAll(" ",'')):
-                         AssetImage('assets/images/default_image.png'),
-                        fit: BoxFit.cover,
-                        alignment: Alignment.topCenter,
-                      ),
-                      color: Colors.black,
-                    ),
-                    child: Stack(
-                      children: [
+ const RestaurantCardFuture({super.key, required this.future});
 
-                        Positioned.fill(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                colors: [Colors.transparent, Colors.black.withValues(alpha: 0.8)],
-                                begin: Alignment.topCenter,
-                                end: Alignment.bottomCenter,
-                              ),
-                            ),
-                          ),
-                        ),
 
-                        Positioned(
-                          left: 16,
-                          bottom: 24,
-                          right: 16,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${restaurant['username']}',
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                '${restaurant['Description']}',
-                                style: const TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 16,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
+ Future<List<String>> getimageUrls() async{
+   final ref = FirebaseDatabase.instance.ref().child('.read');
+   final snapshot = await ref.get();
 
-                      ]
-                    ),
-                  ),
 
-                  SizedBox(
-                    height: 20.0,
-                  ),
+   if(snapshot.exists) {
+     final data = snapshot.value as Map<dynamic, dynamic>;
+     List<String> imageUrls = [];
 
-                  Container(
-                    height: 50.0,
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    padding: EdgeInsets.symmetric(vertical: 10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
 
-                        Row(
-                          children: [
-                            Icon(Icons.table_restaurant),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Text(
-                                '${restaurant['Cuisine']}'
-                            ),
-                          ],
-                        ),
+     data.forEach((key, value) {
+       imageUrls.add(value['Image']);
+     });
 
-                        Row(
-                          children: [
-                            Icon(Icons.monetization_on),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Text(
-                                '${restaurant['PriceRange']}'
-                            ),
-                          ],
-                        ),
 
-                        Row(
-                          children: [
-                            Icon(Icons.train),
-                            SizedBox(
-                              width: 5.0,
-                            ),
-                            Text(
-                                '${restaurant['MRT']}'
-                            ),
-                          ],
-                        ),
+     return imageUrls;
+   }
+   return [];
 
-                      ],
-                    )
-                  ),
 
-                  SizedBox(
-                    height: 20.0,
-                  ),
 
-                  Container(
-                    width: MediaQuery.of(context).size.width * 0.85,
-                    decoration: BoxDecoration(
-                      color: Colors.white70,
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    padding: EdgeInsets.all(10.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Signature Dish',
-                          style: KTextStyle.normalTextStyle,
-                        ),
 
-                        SizedBox(
-                          height: 5.0,
-                        ),
+ }
 
-                        Text(
-                          '${restaurant['SignatureDish']}',
-                          style: KTextStyle.titleTextStyle,
-                        )
-                      ],
-                    ),
-                  ),
 
-                  SizedBox(
-                    height: 20.0,
-                  ),
+ Widget build(BuildContext context) {
+   return FutureBuilder<Map<String, dynamic>?>(
+     future: future,
+     builder: (context, snapshot) {
+       if (snapshot.connectionState == ConnectionState.waiting) {
+         return Center(child: CircularProgressIndicator());
+       } else if (snapshot.hasError) {
+         return Center(child: Text('Error: ${snapshot.error}'));
+       } else if (!snapshot.hasData || snapshot.data == null) {
+         return Center(child: Text('No restaurant data available.'));
+       } else {
+         final restaurant = snapshot.data!;
+         return SingleChildScrollView(
+           child: Card(
+             elevation: 8,
+             shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(25),
+             ),
+             clipBehavior: Clip.antiAlias,
+             color: Color(0xFFFCAEAE),
+             child: Column(
+               mainAxisSize: MainAxisSize.min,
+               crossAxisAlignment: CrossAxisAlignment.center,
+               children: [
 
-                ],
-              ),
-            ),
-          );
-        }
-      },
-    );
-  }
+
+                 Container(
+                   height: MediaQuery.of(context).size.width,
+                   width: MediaQuery.of(context).size.width,
+                   decoration: BoxDecoration(
+                     image:
+                     DecorationImage(
+                       image:
+                       restaurant['Image'] != null ?
+                        NetworkImage(
+                         restaurant['Image'].replaceAll(" ",'')):
+                        AssetImage('assets/images/default_image.png'),
+                       fit: BoxFit.cover,
+                       alignment: Alignment.topCenter,
+                     ),
+                     color: Colors.black,
+                   ),
+                   child: Stack(
+                     children: [
+
+
+                       Positioned.fill(
+                         child: Container(
+                           decoration: BoxDecoration(
+                             gradient: LinearGradient(
+                               colors: [Colors.transparent, Colors.black.withValues(alpha: 0.8)],
+                               begin: Alignment.topCenter,
+                               end: Alignment.bottomCenter,
+                             ),
+                           ),
+                         ),
+                       ),
+
+
+                       Positioned(
+                         left: 16,
+                         bottom: 24,
+                         right: 16,
+                         child: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text(
+                               '${restaurant['username']}',
+                               style: const TextStyle(
+                                 color: Colors.white,
+                                 fontSize: 28,
+                                 fontWeight: FontWeight.bold,
+                               ),
+                             ),
+                             const SizedBox(height: 4),
+                             Text(
+                               '${restaurant['Description']}',
+                               style: const TextStyle(
+                                 color: Colors.white70,
+                                 fontSize: 16,
+                               ),
+                             ),
+                           ],
+                         ),
+                       ),
+
+
+                     ]
+                   ),
+                 ),
+
+
+                 SizedBox(
+                   height: 20.0,
+                 ),
+
+
+                 Container(
+                   height: 50.0,
+                   width: MediaQuery.of(context).size.width * 0.85,
+                   decoration: BoxDecoration(
+                     color: Colors.white70,
+                     borderRadius: BorderRadius.circular(15.0),
+                   ),
+                   padding: EdgeInsets.symmetric(vertical: 10.0),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                     crossAxisAlignment: CrossAxisAlignment.center,
+                     children: [
+
+
+                       Row(
+                         children: [
+                           Icon(Icons.table_restaurant),
+                           SizedBox(
+                             width: 5.0,
+                           ),
+                           Text(
+                               '${restaurant['Cuisine']}'
+                           ),
+                         ],
+                       ),
+
+
+                       Row(
+                         children: [
+                           Icon(Icons.monetization_on),
+                           SizedBox(
+                             width: 5.0,
+                           ),
+                           Text(
+                               '${restaurant['PriceRange']}'
+                           ),
+                         ],
+                       ),
+
+
+                       Row(
+                         children: [
+                           Icon(Icons.train),
+                           SizedBox(
+                             width: 5.0,
+                           ),
+                           Text(
+                               '${restaurant['MRT']}'
+                           ),
+                         ],
+                       ),
+
+
+                     ],
+                   )
+                 ),
+
+
+                 SizedBox(
+                   height: 20.0,
+                 ),
+
+
+                 Container(
+                   width: MediaQuery.of(context).size.width * 0.85,
+                   decoration: BoxDecoration(
+                     color: Colors.white70,
+                     borderRadius: BorderRadius.circular(15.0),
+                   ),
+                   padding: EdgeInsets.all(10.0),
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Text(
+                         'Signature Dish',
+                         style: KTextStyle.normalTextStyle,
+                       ),
+
+
+                       SizedBox(
+                         height: 5.0,
+                       ),
+
+
+                       Text(
+                         '${restaurant['SignatureDish']}',
+                         style: KTextStyle.titleTextStyle,
+                       )
+                     ],
+                   ),
+                 ),
+
+
+                 SizedBox(
+                   height: 20.0,
+                 ),
+
+
+                 Container(
+                   width: MediaQuery.of(context).size.width * 0.85,
+                   decoration: BoxDecoration(
+                     color: Colors.white70,
+                     borderRadius: BorderRadius.circular(15.0),
+                   ),
+                   padding: EdgeInsets.all(10.0),
+                   child: Column(
+                     crossAxisAlignment: CrossAxisAlignment.start,
+                     children: [
+                       Text(
+                         'Socials',
+                         style: KTextStyle.titleTextStyle,
+                       ),
+
+
+                       SizedBox(
+                         height: 10.0,
+                       ),
+                      
+                       if (restaurant['Facebook'] != null && restaurant['Facebook'].isNotEmpty)
+                       GestureDetector(
+                         onTap: () async {
+                           final url = Uri.parse(restaurant['Facebook']);
+                           if (url != null && await canLaunchUrl(url)) {
+                             await launchUrl(url);
+                           } else {
+                             throw 'Could not launch $url';
+                           }
+                         },
+                         child: Text(
+                           'Facebook',
+                           style: KTextStyle.normalTextStyle.copyWith(
+                             color: Colors.blue,
+                          
+                           fontSize: 25,
+                           ),
+                         ),
+                       ),
+
+
+                       SizedBox(
+                         height: 10.0,
+                       ),
+                      
+                       if (restaurant['Instagram'] != null && restaurant['Instagram'].isNotEmpty)
+                       GestureDetector(
+                         onTap: () async {
+                           final url = Uri.parse(restaurant['Instagram']);
+                           if (url != null && await canLaunchUrl(url)) {
+                             await launchUrl(url);
+                           } else {
+                             throw 'Could not launch $url';
+                           }
+                         },
+                         child: Text(
+                           'Instagram',
+                           style: KTextStyle.normalTextStyle.copyWith(
+                             color: Colors.blue,
+                          
+                           fontSize: 25,
+                           ),
+                         ),
+                       ),
+                      
+
+
+                     ],
+                   ),
+                 ),
+
+
+               ],
+             ),
+           ),
+         );
+       }
+     },
+   );
+ }
 }
+
