@@ -14,6 +14,32 @@ class DatabaseService {
     await ref.set(data);
   }
 
+  // Read data
+  Future<DataSnapshot?> read({
+    required String path,
+  }) async {
+    final DatabaseReference ref = _firebaseDatabase.ref().child(path);
+    final DataSnapshot snapshot = await ref.get();
+    return snapshot.exists ? snapshot : null;
+  }
+
+  // Update data
+  Future<void> update({
+    required String path,
+    required Map<String, dynamic> data,
+  }) async {
+    final DatabaseReference ref = _firebaseDatabase.ref().child(path);
+    await ref.update(data);
+  }
+
+  // Delete data
+  Future<void> delete({
+    required String path,
+  }) async {
+    final DatabaseReference ref = _firebaseDatabase.ref().child(path);
+    await ref.remove();
+  }
+
   // Randomly generate a card deck of restaurants for each Gobbler
   Future<List<Future<Map<String, dynamic>>>> getRandomRestaurants({required String? gobblerUid}) async {
     final DatabaseReference ref = _firebaseDatabase.ref('Gobbled');
@@ -72,7 +98,6 @@ class DatabaseService {
 
     if (snapshot.exists && gobblerUid != null) {
       data = snapshot.value as Map<dynamic, dynamic>;
-
       final DataSnapshot? savedRestaurants = await DatabaseService().read(path: 'Gobbler/$gobblerUid/savedRestaurants');
       final int length = savedRestaurants != null ? savedRestaurants.children.length : 0;
       for (int counter = 0; counter < length; counter++) {
@@ -83,25 +108,27 @@ class DatabaseService {
     return restaurants;
   }
 
-  // Read data
-  Future<DataSnapshot?> read({required String path}) async {
-    final DatabaseReference ref = _firebaseDatabase.ref().child(path);
-    final DataSnapshot snapshot = await ref.get();
-    return snapshot.exists ? snapshot : null;
-  }
-
-  // Update data
-  Future<void> update({
-    required String path,
-    required Map<String, dynamic> data,
-  }) async {
-    final DatabaseReference ref = _firebaseDatabase.ref().child(path);
-    await ref.update(data);
-  }
-
-  // Delete data
-  Future<void> delete({required String path}) async {
-    final DatabaseReference ref = _firebaseDatabase.ref().child(path);
-    await ref.remove();
+  // Delete saved restaurant
+  Future<void> deleteSavedRestaurant({required String? gobblerUid, required String? gobbledUid}) async {
+    if (gobblerUid != null && gobbledUid != null) {
+      final DataSnapshot? savedRestaurants = await DatabaseService().read(path: 'Gobbler/$gobblerUid/savedRestaurants');
+      final int length = savedRestaurants != null ? savedRestaurants.children.length : 0;
+      Map<String, dynamic> data = {};
+      bool deleted = false;
+      for (int counter = 0; counter < length; counter++) {
+        if (savedRestaurants?.children.elementAt(counter).value == gobbledUid) {
+          data = {'listItem${counter + 1}' : null};
+          update(path: 'Gobbler/$gobblerUid/savedRestaurants', data: data);
+          deleted = true;
+        } else if (deleted && counter > 0) {
+          data = {'listItem$counter' : savedRestaurants?.children.elementAt(counter).value};
+          update(path: 'Gobbler/$gobblerUid/savedRestaurants', data: data);
+          if (counter + 1 == length) {
+            data = {'listItem${counter + 1}' : null};
+            update(path: 'Gobbler/$gobblerUid/savedRestaurants', data: data);
+          }
+        }
+      }
+    }
   }
 }

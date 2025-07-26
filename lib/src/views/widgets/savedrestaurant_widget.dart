@@ -1,14 +1,18 @@
-import 'package:GobbleUp/src/data/constants.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:GobbleUp/src/services/database_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class SavedRestaurantFuture extends StatelessWidget {
+  final VoidCallback onRefresh;
   final Future<Map<String, dynamic>?> future;
+  final User? user;
 
-  const SavedRestaurantFuture({super.key, required this.future});
+  const SavedRestaurantFuture({super.key, required this.onRefresh, required this.future, required this.user});
 
-  void deleteSaved() {
-
+  void deleteSaved() async {
+    final Map<String, dynamic>? restaurant = await future;
+    await DatabaseService().deleteSavedRestaurant(gobblerUid: user?.uid, gobbledUid: restaurant?['uid']);
+    onRefresh();
   }
 
   @override
@@ -132,9 +136,7 @@ class SavedRestaurantFuture extends StatelessWidget {
                     Icons.delete,
                     color: Colors.white70,
                   ),
-                  onPressed: () {
-                    deleteSaved();
-                  },
+                  onPressed: deleteSaved,
                 ),
               ),
             ]

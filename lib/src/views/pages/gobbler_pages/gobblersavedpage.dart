@@ -10,10 +10,10 @@ class GobblerSavedPage extends StatefulWidget {
   const GobblerSavedPage({super.key});
 
   @override
-  State<GobblerSavedPage> createState() => _GobblerHomePageState();
+  State<GobblerSavedPage> createState() => GobblerSavedPageState();
 }
 
-class _GobblerHomePageState extends State<GobblerSavedPage> {
+class GobblerSavedPageState extends State<GobblerSavedPage> {
   final User? user = AuthService().currentUser;
   List<Future<Map<String, dynamic>>> savedRestaurants = [];
   bool loading = true;
@@ -21,6 +21,13 @@ class _GobblerHomePageState extends State<GobblerSavedPage> {
   @override
   void initState() {
     super.initState();
+    loadSavedRestaurants();
+  }
+
+  void refreshPage() {
+    setState(() {
+      loading = true;
+    });
     loadSavedRestaurants();
   }
 
@@ -66,7 +73,7 @@ class _GobblerHomePageState extends State<GobblerSavedPage> {
           // Align the text in the center of the screen
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: savedRestaurants.map((e) => SavedRestaurantFuture(future: e),).toList() // too long when database is big
+          children: savedRestaurants.map((e) => SavedRestaurantFuture(future: e, user: user, onRefresh: refreshPage,),).toList()
         ),
       )
       : Center(child: Text('You do not have any saved restaurants'),)
