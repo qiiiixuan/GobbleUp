@@ -1,154 +1,125 @@
 # 🍽️ GobbleUp
+A food recommendation app inspired by Hinge
 
-**NUS Orbital 2025 · Team GobbleUp · ID: 7035**  
-Proposed Level of Achievement: **Apollo 11**
+**NUS Orbital 2025 – Apollo 11 Project**  
+Team GobbleUp (ID 7035)  
+Contributors: Truman Tong, Zhu Qixuan  
+[🔗 Try the Web App](https://gobbleup-4b0ad.web.app)
 
-## 📌 Motivation
+---
 
-Looking for places to eat has become a chore in the age of overwhelming choices. With platforms like Yelp, Google, and TikTok, users are inundated with inconsistent reviews and unfiltered information. Many experience decision fatigue and struggle to choose a meal quickly and confidently.
+## 💡 Motivation
 
-**GobbleUp** aims to solve this problem through a fun and efficient swiping interface that connects foodies with nearby restaurants—like Tinder, but for food.
+Looking for food can be stressful due to information overload, decision fatigue, and platform fragmentation. GobbleUp solves this by offering an engaging, swipe-based recommendation system inspired by dating apps and optimized for foodies.
 
 ---
 
 ## 🎯 Aim
 
-GobbleUp is a mobile platform that:
-- Allows users (Gobbler) to swipe on restaurants (Gobbled) that match their preferences.
-- Helps lesser-known restaurants gain exposure through randomized matching.
-- Consolidates all food discovery info into a single app, reducing app-switching fatigue.
-- Makes food browsing enjoyable during both meal planning and casual scrolling.
+GobbleUp aims to:
+- Connect restaurants with potential customers.
+- Provide food recommendations through swipe mechanics.
+- Centralize food info with links, reviews, and profiles.
+- Make food discovery fun, fast, and personalized.
 
 ---
 
-## 🎯 Target Audience
-- **Gobbler**: Foodie users looking for places to eat.
-- **Gobbled**: Restaurants seeking exposure to targeted audiences.
+## 👥 Target Audience
+
+- **Gobbler**: Foodies looking for new eats.
+- **Gobbled**: Restaurants promoting their food.
 
 ---
 
-## 🧑‍💻 Tech Stack
+## 🧑‍💻 User Stories
 
-### Frontend
-- **Framework**: Flutter (Dart)
-
-### Backend
-- **Authentication**: Firebase Auth
-- **Database**: Firebase Realtime Database
-- **Image Hosting (Planned)**: Cloudflare R2
-
----
-
-## 🔧 Software Engineering Practices
-
-### ✅ Version Control
-- Git + GitHub with a clear branching strategy.
-- Use of `main`, `dev`, and `feature/` branches.
-- Rebase strategy used to prevent noisy merge commits.
-- Issues and milestones mapped to Orbital milestones for traceability.
-
-### 📝 Documentation
-- Inline code comments explain component purpose and usage—not every line, but enough to follow logic.
-- Widget annotations clarify structure in complex UI trees.
-- Helps contributors read and scale the codebase faster.
-
-### 📱 Responsive UI
-- Adaptive layout implemented via `LayoutBuilder` and `MediaQuery`.
-- Components adjust dynamically to screen constraints and device orientation.
-- Ensures a seamless experience on various screen sizes.
-
-### ⚠️ Error Handling
-- All asynchronous Firebase operations use `try-catch` blocks.
-- User-friendly error messages via `SnackBar` alerts.
-- Prevents app crashes and guides users when errors occur (e.g., invalid credentials).
-
-### 🧹 KISS Principle
-- Functions are kept concise, clear, and minimally stateful.
-- Avoids deeply nested logic or convoluted side effects.
-
-### 🔄 Continuous Integration
-- Each new feature builds incrementally on stable code.
-- Regular integration ensures that progress is stable and testable, not delayed until the end.
-
-### 🧱 Data Abstraction
-- Authentication and database logic are encapsulated in services.
-- Widgets call high-level methods instead of implementing low-level logic themselves.
+1. As a foodie, I want to swipe through restaurants based on my preferences.
+2. As someone with dietary restrictions, I want to filter options (e.g., vegetarian, halal).
+3. As a frequent diner, I want to leave reviews.
+4. As a restaurant owner, I want to reach users who match my cuisine.
+5. As a planner, I want a list of go-to places.
+6. As a responsible partner, I want my restaurant choices to be impressive.
 
 ---
 
-## 👥 User Stories
+## ✨ Features
 
-1. **As a foodie**, I want to swipe through food places based on my taste preferences.
-2. **As a user with dietary restrictions**, I want to filter recommendations to fit my needs (e.g. vegetarian, halal).
-3. **As a frequent restaurant-goer**, I want to leave reviews for places I love.
-4. **As a restaurant owner**, I want to promote my eatery to users who match my cuisine type.
-5. **As a planner**, I want to save restaurants I like for future dates or hangouts.
-6. **As a responsible partner**, I want to ensure the places I choose for meals are special and high quality.
-
----
-
-## 🚀 Features
-
-| Feature                      | Status         | Description |
-|-----------------------------|----------------|-------------|
-| Swipe Mechanism             | ✅ Implemented | Users swipe left/right on restaurant cards |
-| User Profiles               | ✅ Implemented | Custom profiles for Gobbler and Gobbled |
-| Restaurant Integration      | ✅ Implemented | Restaurants can register and edit listings |
-| Authentication              | ✅ Implemented | Firebase Auth for secure login |
-| Reset Password              | ✅ Implemented | Allows users to recover accounts |
-| External Links              | ⏳ To-do       | Links to TikTok, Maps, websites on profile |
-| Saving Feature              | ⏳ To-do       | Save places you've liked/swiped right on |
-| Filtering System            | ⏳ To-do       | Filter cards by cuisine, dietary needs, etc. |
-| Review & Rating             | ⏳ To-do       | Add feedback and view past experiences |
-| Personalized Matching       | 🔜 Future      | Smart suggestions based on user data |
-| Reservation System          | 🔜 Future      | In-app reservations for swiped restaurants |
+| Feature               | Status        | Description |
+|----------------------|---------------|-------------|
+| Swipe Interface       | ✅ Implemented | Tinder-like food discovery |
+| User Profiles         | ✅ Implemented | Separated onboarding for Gobbler & Gobbled |
+| Restaurant Integration| ✅ Implemented | Editable restaurant profiles |
+| Authentication        | ✅ Implemented | Firebase Auth for sign in/up |
+| External Links        | ✅ Implemented | Google Maps, TikTok, restaurant websites |
+| Saving Restaurants    | ✅ Implemented | Save swiped right restaurants |
+| Filtering             | ✅ Implemented | Cuisines, price ranges, dietary needs |
+| Help Page             | ✅ Implemented | FAQs and app usage guidance |
 
 ---
 
-## 📅 Project Timeline
+## 🔮 Future Extensions
 
-### ✅ Milestone 1 (by 2 June)
-- Ideation, system design, and tech exploration
-- Functional login & register flow
-- GitHub project + issues setup
-
-### ✅ Milestone 2 (by 30 June)
-- Swipe mechanism implemented
-- MVP features like account creation and login
-- Initial UI complete
-
-### ⏳ Milestone 3 (by 28 July)
-- Implement filters, saving, external links
-- Dark mode and region-aware suggestions
-- User and system testing
+- ⭐ **Review & Rating System**: Food journaling and star ratings
+- 🤖 **Matchmaking Algorithm**: Recommend based on swipe history
+- 📅 **Reservation Links**: Redirect to restaurant’s reservation system
+- 📈 **Restaurant Stats Dashboard**: View swipes, saves, and insights
 
 ---
 
-## 🛠️ Installation Instructions
+## 🧪 Testing
 
-### Prerequisites
-- Flutter SDK installed
-- Firebase CLI (if modifying backend)
-- Android Studio / VSCode emulator set up
+All key features have been tested manually and through user feedback.
 
-### Steps to Run Locally
+- ✅ Sign-up/login validation
+- ✅ Swipe/save flow logic
+- ✅ Saved/deleted state consistency
+- ✅ Hyperlink external redirects
+- ✅ Filter application and reset behavior
 
-To clone the repository, run in Git Bash
-```bash
-git clone https://github.com/qiiiixuan/Orbital-2025-GobbleUp.git
-```
-After cloning, go to directory
-```terminal
-cd Orbital-2025-GobbleUp
-```
-To fetch dependencies
-```terminal
-flutter pub get
-```
-To run the program
-```terminal
-flutter run
-```
-### During Testing
+---
 
-- Press ‘hot reload’ button / ‘R’ on your terminal  after creating new Gobbled account to view it in swiper
+## 🛠️ Software Engineering Practices
+
+- **Git + GitHub**: Version control, milestones, and issues
+- **CI/CD**: Firebase Hosting via GitHub deploys
+- **Code Comments**: All logic and UI components are annotated
+- **Error Handling**: Try-catch + Snackbar error messages
+- **Responsive UI**: LayoutBuilder & MediaQuery
+- **KISS Principle**: Clean functions with minimal side effects
+- **Data Abstraction**: Services for auth and database logic reuse
+
+---
+
+## 🧰 Tech Stack
+
+- **Frontend**: Flutter (Dart)
+- **Backend**: Firebase Auth, Realtime Database
+- **Hosting**: Firebase Hosting
+- **Version Control**: Git + GitHub
+
+---
+
+## 📆 Project Timeline
+
+| Milestone | Deliverables |
+|----------|--------------|
+| **M1 (Jun 2)** | Ideation, tech stack, proof-of-concept login |
+| **M2 (Jun 30)** | Swipe functionality, profile creation, auth |
+| **M3 (Jul 28)** | Filtering, saving, help page, UI polish |
+
+---
+
+## 📁 Code Structure
+
+<details>
+<summary><code>📂 lib/</code> folder (main app logic)</summary>
+
+- `data/` – App-wide constants (e.g. styles)
+- `services/` – Firebase logic (auth, DB)
+- `views/`
+  - `pages/` – Screens for onboarding, home, profile, etc.
+  - `widgets/` – Reusable UI widgets (e.g., restaurant cards)
+- `main.dart` – App entry point
+- `app.dart` – Theme & routing
+- `firebase_options.dart` – Firebase config
+</details>
