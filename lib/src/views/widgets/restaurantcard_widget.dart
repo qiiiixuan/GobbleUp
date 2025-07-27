@@ -77,10 +77,10 @@ class RestaurantCardFuture extends StatelessWidget {
                      image:
                      DecorationImage(
                        image:
-                       restaurant['Image'] != null ?
+                       restaurant['Image'] != "" ?
                         NetworkImage(
-                         restaurant['Image'].replaceAll(" ",'')):
-                        AssetImage('assets/images/default_image.png'),
+                         restaurant['Image'].replaceAll(" ",''))
+                         : AssetImage('assets/images/default_image.png'),
                        fit: BoxFit.cover,
                        alignment: Alignment.topCenter,
                      ),

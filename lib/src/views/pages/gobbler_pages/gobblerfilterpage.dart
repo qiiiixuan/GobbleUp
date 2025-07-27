@@ -39,7 +39,7 @@ class _GobblerFilterPageState extends State<GobblerFilterPage> {
     2: '\$20 - \$30',
     3: '\$30 - \$40',
     4: 'More than \$40',
-    5: null
+    5: 'Any Price Range',
   };
 
   final Map<int,String> Cuisine = {
@@ -162,7 +162,7 @@ class _GobblerFilterPageState extends State<GobblerFilterPage> {
                   style: KButtonStyle.elevatedButtonStyle,
                   onPressed: () {
                     setState(() {
-                      selectVal = 0.0; // Reset price range
+                      selectVal = 5.0; // Reset price range
                       selectCat.clear(); // Clear selected categories
                     });
                   },

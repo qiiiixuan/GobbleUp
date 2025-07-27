@@ -56,7 +56,7 @@ class _GobblerHomePageState extends State<GobblerHomePage> {
       bool matchesCuisine = widget.filteredCuisines.isEmpty ||
           widget.filteredCuisines.contains(restaurantData['Cuisine']);
       bool matchesPriceRange = widget.filteredPriceRange.isEmpty ||
-          restaurantData['PriceRange'] == widget.filteredPriceRange;
+          restaurantData['PriceRange'] == widget.filteredPriceRange || widget.filteredPriceRange == 'Any Price Range';
 
       if (matchesCuisine && matchesPriceRange) {
         filteredRestaurantFutures.add(restaurantData);

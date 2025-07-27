@@ -35,8 +35,8 @@ class _GobbleUpDateProfilePageState extends State<GobbleUpDateProfilePage> {
 
 
 
- String? selectedPriceRange;
- String? selectedCuisine;
+ String? selectedPriceRange ;
+ String? selectedCuisine ;
  Map<String, dynamic>? restaurant;
 
 
@@ -195,19 +195,20 @@ class _GobbleUpDateProfilePageState extends State<GobbleUpDateProfilePage> {
 
            SizedBox(
              width: double.infinity,
-             child: DropdownButton(
+             child: DropdownButton<String>(
                alignment: AlignmentDirectional.centerStart,
                hint: Container(
                  alignment: Alignment.centerLeft,
                  child: Text('Cuisine'),
                ),
                value: selectedCuisine,
-               items: cuisines.map((value) => DropdownMenuItem(
+               items: cuisines.map((value) => DropdownMenuItem<String>(
                  value: value,
                  child: Text(value),
                )).toList(),
                onChanged: (String? value) {
                  setState(() {
+                    print(value);
                    selectedCuisine = value;
                  });
                },
