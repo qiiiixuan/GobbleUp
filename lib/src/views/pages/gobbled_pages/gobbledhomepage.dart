@@ -1,20 +1,16 @@
 import 'package:GobbleUp/src/data/constants.dart';
-import 'package:GobbleUp/src/views/pages/gobbled_pages/gobbledhelppage.dart';
 import 'package:flutter/material.dart';
-
+import 'gobbledhelppage.dart';
 
 class GobbledHomePage extends StatefulWidget {
  const GobbledHomePage({super.key});
 
-
  @override
- State<GobbledHomePage> createState() => _GobblerHomePageState();
+ State<GobbledHomePage> createState() => _GobbledHomePageState();
 }
 
-
-class _GobblerHomePageState extends State<GobbledHomePage> {
+class _GobbledHomePageState extends State<GobbledHomePage> {
  int currentIndex = 0;
-
 
  @override
  Widget build(BuildContext context) {
@@ -39,7 +35,6 @@ class _GobblerHomePageState extends State<GobbledHomePage> {
        ),
        automaticallyImplyLeading: false, // Disable back button
 
-
        actions: [
          IconButton(
            icon: Icon(Icons.question_mark_rounded, size: 40,),
@@ -55,19 +50,17 @@ class _GobblerHomePageState extends State<GobbledHomePage> {
        ],
      ),
 
-
-     body: Center(
-       child: Column(
-         // Align the text in the center of the screen
-         mainAxisAlignment: MainAxisAlignment.center,
-         crossAxisAlignment: CrossAxisAlignment.center,
-         children: [
-           Text('Welcome to the Gobbled Statistics Page!'),
-           Text('(to be implemented)'),
-         ],
-       ),
-     )
-   );
- }
+      body: Center(
+        child: Column(
+          // Align the text in the center of the screen
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Welcome to the Gobbled Statistics Page!'),
+            Text('(future extension)'),
+          ],
+        ),
+      )
+    );
+  }
 }
-

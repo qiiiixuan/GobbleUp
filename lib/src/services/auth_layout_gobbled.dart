@@ -19,6 +19,8 @@ class AuthLayoutGobbled extends StatelessWidget {
           stream: authService.authStateChanges,
           builder: (context, snapshot) {
             Widget widget;
+
+            // Shows a loading screen when data is loading
             if (snapshot.connectionState == ConnectionState.waiting) {
               widget = const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasData ) {

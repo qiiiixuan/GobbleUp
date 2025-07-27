@@ -100,8 +100,8 @@ class WelcomePage extends StatelessWidget {
             ),
           );
         },
-        child: Icon(Icons.question_mark_rounded, size: 30.0),
-        backgroundColor: Color(0xFFFF8989), // Replace with your desired color
+        backgroundColor: Color(0xFFFF8989),
+        child: Icon(Icons.question_mark_rounded, size: 30.0), // Replace with your desired color
       ),
     );
   }

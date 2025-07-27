@@ -42,8 +42,6 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
     'Thai',
     'Vegetarian',
     'Other',
-
-   
   ];
 
   List<String> priceRange = [
@@ -52,7 +50,6 @@ class _GobbledRegisterPageState extends State<GobbledRegisterPage> {
     '\$20 - \$30',
     '\$30 - \$40',
     'More than \$40',
-   
   ];
 
  

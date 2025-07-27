@@ -1,5 +1,3 @@
-
-import 'package:GobbleUp/src/views/widgets/selectbutton.dart';
 import 'package:flutter/material.dart';
 import 'package:GobbleUp/src/data/constants.dart';
 
@@ -18,10 +16,8 @@ class WelcomeHelpPage extends StatelessWidget {
            Navigator.pop(context);
          },
        ),
-
-
        title: Text("Welcome Help Page"),
-       backgroundColor: Color(0xFFFF8989), // Replace with your desired color
+       backgroundColor: Color(0xFFFF8989),
        automaticallyImplyLeading: true,
      ),
      body: Padding(
@@ -33,10 +29,6 @@ class WelcomeHelpPage extends StatelessWidget {
              "Frequently Asked Questions",
              style: KTextStyle.titleTextStyle,
            ),
-
-
-
-
            SizedBox(height: 20),
            Text(
              "1. What is Gobble Up?",

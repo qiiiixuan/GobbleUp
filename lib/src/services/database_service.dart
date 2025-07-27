@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'package:GobbleUp/src/views/pages/gobbler_pages/gobblerfilterpage.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 class DatabaseService {

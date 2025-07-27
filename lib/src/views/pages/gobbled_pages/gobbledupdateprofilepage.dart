@@ -2,7 +2,6 @@ import 'package:GobbleUp/src/data/constants.dart';
 import 'package:GobbleUp/src/services/database_service.dart';
 import 'package:GobbleUp/src/views/pages/gobbled_pages/gobbledrootpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:GobbleUp/src/services/auth_service.dart';
 

@@ -52,8 +52,6 @@ class AuthService {
    required String name}) async {
    await currentUser!.updateDisplayName(name);
  }
-
-  // Update profile information
  
 
  // Delete account

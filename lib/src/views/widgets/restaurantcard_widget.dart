@@ -1,6 +1,3 @@
-import 'dart:io';
-
-
 import 'package:GobbleUp/src/data/constants.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -9,12 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 class RestaurantCardFuture extends StatelessWidget {
  final Future<Map<String, dynamic>?> future;
-
-
- //list of filtered cuisines and price range
- // List<String> filteredCuisines = [];
- // String filteredPriceRange = '';
-
 
  const RestaurantCardFuture({super.key, required this.future});
 
@@ -37,14 +28,11 @@ class RestaurantCardFuture extends StatelessWidget {
      return imageUrls;
    }
    return [];
-
-
-
-
  }
 
 
- Widget build(BuildContext context) {
+  @override
+  Widget build(BuildContext context) {
    return FutureBuilder<Map<String, dynamic>?>(
      future: future,
      builder: (context, snapshot) {
@@ -310,6 +298,9 @@ class RestaurantCardFuture extends StatelessWidget {
                    ),
                  ),
 
+                 SizedBox(
+                   height: 20.0,
+                 ),
 
                ],
              ),

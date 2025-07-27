@@ -9,12 +9,9 @@ class ResetPasswordPage extends StatefulWidget {
   State<ResetPasswordPage> createState() => _ResetPasswordPageState();
 }
 
-
-
 class _ResetPasswordPageState extends State<ResetPasswordPage> {
   TextEditingController emailController = TextEditingController();
   String errorMessage = '';
-
 
   // Reset password function
   void resetPassword() async {
