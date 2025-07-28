@@ -9,21 +9,17 @@ class RestaurantCardFuture extends StatelessWidget {
 
  const RestaurantCardFuture({super.key, required this.future});
 
-
  Future<List<String>> getimageUrls() async{
    final ref = FirebaseDatabase.instance.ref().child('.read');
    final snapshot = await ref.get();
-
 
    if(snapshot.exists) {
      final data = snapshot.value as Map<dynamic, dynamic>;
      List<String> imageUrls = [];
 
-
      data.forEach((key, value) {
        imageUrls.add(value['Image']);
      });
-
 
      return imageUrls;
    }
@@ -57,26 +53,29 @@ class RestaurantCardFuture extends StatelessWidget {
                crossAxisAlignment: CrossAxisAlignment.center,
                children: [
 
-
                  Container(
                    height: MediaQuery.of(context).size.width,
                    width: MediaQuery.of(context).size.width,
                    decoration: BoxDecoration(
-                     image:
-                     DecorationImage(
-                       image:
-                       restaurant['Image'] != "" ?
-                        NetworkImage(
-                         restaurant['Image'].replaceAll(" ",''))
-                         : AssetImage('assets/images/default_image.png'),
-                       fit: BoxFit.cover,
-                       alignment: Alignment.topCenter,
-                     ),
                      color: Colors.black,
                    ),
                    child: Stack(
                      children: [
 
+                       Image.asset(
+                         'assets/images/default_image.png',
+                         width: double.infinity,
+                         height: MediaQuery.of(context).size.width,
+                         fit: BoxFit.cover,
+                       ),
+
+                       Image.network(
+                         restaurant['Image'].replaceAll(' ', ''),
+                         width: double.infinity,
+                         height: MediaQuery.of(context).size.width,
+                         fit: BoxFit.cover,
+                         errorBuilder: (context, error, stackTrace) => const SizedBox.shrink(),
+                       ),
 
                        Positioned.fill(
                          child: Container(
@@ -251,7 +250,7 @@ class RestaurantCardFuture extends StatelessWidget {
                        GestureDetector(
                          onTap: () async {
                            final url = Uri.parse(restaurant['Facebook']);
-                           if (url != null && await canLaunchUrl(url)) {
+                           if (await canLaunchUrl(url)) {
                              await launchUrl(url);
                            } else {
                              throw 'Could not launch $url';
@@ -276,7 +275,7 @@ class RestaurantCardFuture extends StatelessWidget {
                        GestureDetector(
                          onTap: () async {
                            final url = Uri.parse(restaurant['Instagram']);
-                           if (url != null && await canLaunchUrl(url)) {
+                           if (await canLaunchUrl(url)) {
                              await launchUrl(url);
                            } else {
                              throw 'Could not launch $url';
