@@ -1,1 +1,0 @@
- /Users/trums/Documents/my_flutter_gobbleup/GobbleUp/lib/src/localization/app_localizations_en.dart /Users/trums/Documents/my_flutter_gobbleup/GobbleUp/lib/src/localization/app_localizations.dart:  /Users/trums/Documents/my_flutter_gobbleup/GobbleUp/l10n.yaml /Users/trums/Documents/my_flutter_gobbleup/GobbleUp/lib/src/localization/app_en.arb
