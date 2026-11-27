@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Build output, CocoaPods and Firebase deploy cache: never commit
+**/build/
+**/Pods/
+.firebase/
